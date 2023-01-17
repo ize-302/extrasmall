@@ -1,11 +1,12 @@
 import * as React from 'react';
 
+import TopNav from '@/components/layout/TopNav';
+
 export default function HomePage() {
   return (
     <main>
-      <section className='bg-white'>
-        <p className='bg-red-300'>sss</p>
-      </section>
+      <TopNav />
+      <section className='bg-white'>pkpk</section>
     </main>
   );
 }
