@@ -1,14 +1,30 @@
 import { useFormik } from 'formik';
+import { withZodSchema } from 'formik-validator-zod';
+import { useRouter } from 'next/router';
+import SignupSchema from 'schemas/signup.schema';
+
+import { supabase } from '@/supabase/api';
 
 const SignupPage = () => {
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       email: '',
       password: '',
     },
-    onSubmit: (values) => {
+    validate: withZodSchema(SignupSchema),
+    onSubmit: async (values) => {
       // eslint-disable-next-line no-console
-      console.log(values);
+      const { error } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (error) {
+        alert(JSON.stringify(error));
+      } else {
+        router.push('/signin');
+      }
     },
   });
   return (
@@ -30,6 +46,7 @@ const SignupPage = () => {
                 id='email-address'
                 name='email'
                 type='email'
+                onChange={formik.handleChange}
                 required
                 className='w-full rounded-md border border-gray-300 px-3 py-2'
                 placeholder='Email address'
@@ -44,6 +61,7 @@ const SignupPage = () => {
                 id='password'
                 name='password'
                 type='password'
+                onChange={formik.handleChange}
                 required
                 className='w-full rounded-md border border-gray-300 px-3 py-2'
                 placeholder='Password'
@@ -54,7 +72,7 @@ const SignupPage = () => {
           <div>
             <button
               type='submit'
-              className='w-full rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white'
+              className='w-full rounded-md border border-transparent bg-black py-2 px-4 text-sm font-medium text-white'
             >
               Sign up
             </button>

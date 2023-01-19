@@ -13,7 +13,7 @@ export default function Document() {
         />
       </Head>
       <body>
-        <div className='container mx-auto max-w-7xl'>
+        <div className='container mx-auto max-w-7xl px-4'>
           <Main />
           <NextScript />
         </div>
